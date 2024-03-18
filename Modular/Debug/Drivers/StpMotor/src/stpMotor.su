@@ -1,0 +1,4 @@
+../Drivers/StpMotor/src/stpMotor.c:57:6:smInit	16	static
+../Drivers/StpMotor/src/stpMotor.c:65:18:smInitAxisandMotors	24	static
+../Drivers/StpMotor/src/stpMotor.c:95:6:smMotorSteps	24	static
+../Drivers/StpMotor/src/stpMotor.c:111:18:smMoveAxis2Pos	24	static
