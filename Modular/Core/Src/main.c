@@ -696,7 +696,7 @@ void StartDefaultTask(void *argument)
 	  Task_action(Verde);
 		//Test();
 	  //smRun();
-	smMotorSteps(120);
+	smMotorSteps(250);
 
     state = HAL_GPIO_ReadPin(SMZL_DIR_GPIO_Port, SMZL_DIR_Pin);
     HAL_GPIO_WritePin(SMZL_DIR_GPIO_Port, SMZL_DIR_Pin, (GPIO_PinState)AxisDir_Z_UP);

@@ -97,7 +97,7 @@ StpMtrReturnType smInitAxisandMotors(AxisStpMtrDescriptor * axisDes, AxisGroup g
  **************************************************************************************************/
 void smMotorSteps(uint8_t steps)
 {
-	for (int var = 0; var < 100; ++var)
+	for (int var = 0; var < 200; ++var)
 	{
 		HAL_GPIO_WritePin(SMZR_STEP_GPIO_Port, SMZR_STEP_Pin, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(SMZL_STEP_GPIO_Port, SMZL_STEP_Pin, GPIO_PIN_SET);
