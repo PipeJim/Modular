@@ -18,6 +18,8 @@
 #define Verde 1
 
 /***************************************** Typedef ************************************************/
+typedef unsigned char boolean;
+
 typedef enum
 {
 	STOP,
@@ -35,18 +37,6 @@ typedef enum
 
 typedef enum
 {
-	kDIR_UP,
-	kDIR_DOWN
-}StpMtrZDir;
-
-typedef enum
-{
-	kDIR_RIGHT,
-	kDIR_LEFT
-}StpMtrXDir;
-
-typedef enum
-{
 	kEOL_None,
 	kEOL_Top,
 	kEOL_Bottom,
@@ -57,24 +47,35 @@ typedef enum
 
 typedef enum
 {
+	kReq_Done,
+	kReq_standby
+}ReqPhaseType;
+
+typedef enum
+{
 	E_OK,
 	E_NOK
 }StpMtrReturnType;
 
+/* Step Motor Client callback function type */
+typedef void (* StpMotorReqCbk)(AxisGroup motor, uint8_t crrntStp, StpMtrEOLActive eolDetected, StpMtrReturnType PosResult);
+
 /***************************************** Structures *********************************************/
 typedef struct stpMotorDes
 {
-	AxisGroup axisGroup;
-	StpMtrState state;
-	StepperMotorCfg *stpMotorCfg;
-	uint8_t	crrnt_step;
-	StpMtrEOLActive EOLflag;
+	AxisGroup 			axisGroup;
+	StpMtrState 		state;
+	StepperMotorCfg 	*stpMotorCfg;
+	uint8_t				crrnt_step;
+	StpMtrEOLActive 	EOLflag;
 }AxisStpMtrDescriptor;
 
 typedef struct stpMotorRequest
 {
+	AxisGroup axisGroup;
 	uint8_t	steps_to_move;
-	uint8_t	dir;
+	boolean	dir;
+	StpMotorReqCbk ClientCallback;
 }StpMtrRequestType;
 
 
@@ -105,5 +106,7 @@ void smInit(void);
  *
  **************************************************************************************************/
 void smMotorSteps(uint8_t steps);
+void smRun(StpMtrRequestType *request);
+StpMtrReturnType smSetRequest(StpMtrRequestType *request);
 
 #endif /* STP_MOTOR_H */

@@ -1,4 +1,7 @@
-../Drivers/StpMotor/src/stpMotor.c:57:6:smInit	16	static
-../Drivers/StpMotor/src/stpMotor.c:65:18:smInitAxisandMotors	24	static
-../Drivers/StpMotor/src/stpMotor.c:95:6:smMotorSteps	24	static
-../Drivers/StpMotor/src/stpMotor.c:111:18:smMoveAxis2Pos	24	static
+../Drivers/StpMotor/src/stpMotor.c:59:6:smInit	8	static
+../Drivers/StpMotor/src/stpMotor.c:67:18:smInitAxisandMotors	24	static
+../Drivers/StpMotor/src/stpMotor.c:98:6:smMotorSteps	24	static
+../Drivers/StpMotor/src/stpMotor.c:113:6:smRun	24	static
+../Drivers/StpMotor/src/stpMotor.c:132:6:sm_Task	4	static
+../Drivers/StpMotor/src/stpMotor.c:138:18:smSetRequest	24	static
+../Drivers/StpMotor/src/stpMotor.c:152:6:HAL_GPIO_EXTI_Callback	24	static

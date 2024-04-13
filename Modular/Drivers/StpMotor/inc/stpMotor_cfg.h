@@ -14,7 +14,7 @@
 #include "main.h"
 
 /***************************************** Defines ************************************************/
-#define StepsperRev	200
+#define StepsperRev		200			/* Steps that takes to turn 1 revolution */
 
 #define Motor_X_Axis \
 {\
@@ -42,14 +42,19 @@
 	}\
 }
 
+#define AxisDir_Z_UP		0		/* Seeing from behind the stp motor - Clockwise is Up */
+#define AxisDir_Z_DOWN		1		/* Seeing from behind the stp motor - Anticlockwise is Down */
+
+#define AxisDir_X_RIGHT		0		/* Seeing from behind the stp motor - Clockwise is Right */
+#define AxisDir_X_LEFT		1		/* Seeing from behind the stp motor - Anticlockwise is Left	*/
+
 /***************************************** Typedef ************************************************/
 typedef struct stpMotorCfg
 {
-	const unsigned long dirPort;
-	const uint16_t dirPin;
-	const unsigned long stepPort;
-	const uint16_t stepPin;
-	const uint8_t stpXRev;
+	const unsigned long dirPort;	/* GPIO Port for Direction */
+	const uint16_t dirPin;			/* GPIO Pin for Direction */
+	const unsigned long stepPort;	/* GPIO Port for Direction */
+	const uint16_t stepPin;			/* GPIO Port for Direction */
 }StepperMotorCfg;
 
 /***************************************** Enumerations *******************************************/

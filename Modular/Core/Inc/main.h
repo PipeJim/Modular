@@ -59,9 +59,9 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define TOP_XEL_Pin GPIO_PIN_2
-#define TOP_XEL_GPIO_Port GPIOE
-#define TOP_XEL_EXTI_IRQn EXTI2_IRQn
+#define TOP_ZEL_Pin GPIO_PIN_2
+#define TOP_ZEL_GPIO_Port GPIOE
+#define TOP_ZEL_EXTI_IRQn EXTI2_IRQn
 #define SMZL_DIR_Pin GPIO_PIN_3
 #define SMZL_DIR_GPIO_Port GPIOE
 #define SMZR_DIR_Pin GPIO_PIN_4
@@ -126,8 +126,6 @@ void Error_Handler(void);
 #define ACP_RST_GPIO_Port GPIOA
 #define OTG_FS_PSO_Pin GPIO_PIN_4
 #define OTG_FS_PSO_GPIO_Port GPIOC
-#define OTG_FS_OC_Pin GPIO_PIN_5
-#define OTG_FS_OC_GPIO_Port GPIOC
 #define R3_Pin GPIO_PIN_0
 #define R3_GPIO_Port GPIOB
 #define R6_Pin GPIO_PIN_1
@@ -234,6 +232,9 @@ void Error_Handler(void);
 #define D3_GPIO_Port GPIOD
 #define G7_Pin GPIO_PIN_3
 #define G7_GPIO_Port GPIOD
+#define LEFT_XEL_Pin GPIO_PIN_5
+#define LEFT_XEL_GPIO_Port GPIOD
+#define LEFT_XEL_EXTI_IRQn EXTI9_5_IRQn
 #define B2_Pin GPIO_PIN_6
 #define B2_GPIO_Port GPIOD
 #define G3_Pin GPIO_PIN_10
@@ -248,6 +249,12 @@ void Error_Handler(void);
 #define LD4_GPIO_Port GPIOG
 #define SDNCAS_Pin GPIO_PIN_15
 #define SDNCAS_GPIO_Port GPIOG
+#define RGHT_XEL_Pin GPIO_PIN_3
+#define RGHT_XEL_GPIO_Port GPIOB
+#define RGHT_XEL_EXTI_IRQn EXTI3_IRQn
+#define BOTT_ZEL_Pin GPIO_PIN_4
+#define BOTT_ZEL_GPIO_Port GPIOB
+#define BOTT_ZEL_EXTI_IRQn EXTI4_IRQn
 #define SDCKE1_Pin GPIO_PIN_5
 #define SDCKE1_GPIO_Port GPIOB
 #define SDNE1_Pin GPIO_PIN_6
@@ -264,7 +271,8 @@ void Error_Handler(void);
 #define NBL1_GPIO_Port GPIOE
 
 /* USER CODE BEGIN Private defines */
-
+#define NEGATIVE 0U
+#define POSITIVE 1U
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

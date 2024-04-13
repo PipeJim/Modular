@@ -448,11 +448,11 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOG, LD3_Pin|LD4_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : TOP_XEL_Pin */
-  GPIO_InitStruct.Pin = TOP_XEL_Pin;
+  /*Configure GPIO pin : TOP_ZEL_Pin */
+  GPIO_InitStruct.Pin = TOP_ZEL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  HAL_GPIO_Init(TOP_XEL_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(TOP_ZEL_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : SMZL_DIR_Pin SMZR_DIR_Pin SMZR_STEP_Pin SMX_STEP_Pin */
   GPIO_InitStruct.Pin = SMZL_DIR_Pin|SMZR_DIR_Pin|SMZR_STEP_Pin|SMX_STEP_Pin;
@@ -471,7 +471,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin : SMZL_STEP_Pin */
   GPIO_InitStruct.Pin = SMZL_STEP_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(SMZL_STEP_GPIO_Port, &GPIO_InitStruct);
 
@@ -519,12 +519,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : OTG_FS_OC_Pin */
-  GPIO_InitStruct.Pin = OTG_FS_OC_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(OTG_FS_OC_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : R3_Pin R6_Pin */
   GPIO_InitStruct.Pin = R3_Pin|R6_Pin;
@@ -615,6 +609,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Alternate = GPIO_AF14_LTDC;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : LEFT_XEL_Pin */
+  GPIO_InitStruct.Pin = LEFT_XEL_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(LEFT_XEL_GPIO_Port, &GPIO_InitStruct);
+
   /*Configure GPIO pins : G3_Pin B4_Pin */
   GPIO_InitStruct.Pin = G3_Pin|B4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -630,9 +630,24 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : RGHT_XEL_Pin BOTT_ZEL_Pin */
+  GPIO_InitStruct.Pin = RGHT_XEL_Pin|BOTT_ZEL_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI2_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(EXTI2_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI3_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(EXTI3_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI4_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
@@ -657,23 +672,6 @@ void Task_action(unsigned message)
 	//HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
 }
 
-/***********************************************************************************
- * 
- * @brief External Interupt Handler for End of Line switches
- *
- **********************************************************************************/
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-{
-	Task_action(Verde);
-  if (GPIO_PIN_SET == HAL_GPIO_ReadPin(TOP_XEL_GPIO_Port,TOP_XEL_Pin))
-  {
-    ZAxisDes.EOLflag = kEOL_Top;
-  }
-  else
-  {
-    ZAxisDes.EOLflag = kEOL_None;
-  }    
-}
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -686,13 +684,24 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
+	GPIO_PinState state = 0;
   /* Infinite loop */
   for(;;)
   {
+
+	  state = HAL_GPIO_ReadPin(SMZL_DIR_GPIO_Port, SMZL_DIR_Pin);
+	  HAL_GPIO_WritePin(SMZL_DIR_GPIO_Port, SMZL_DIR_Pin, (GPIO_PinState)AxisDir_Z_DOWN);
 	  HAL_GPIO_TogglePin(SMZR_DIR_GPIO_Port, SMZR_DIR_Pin);
 
 	  Task_action(Verde);
 		//Test();
+	  //smRun();
+	smMotorSteps(120);
+
+    state = HAL_GPIO_ReadPin(SMZL_DIR_GPIO_Port, SMZL_DIR_Pin);
+    HAL_GPIO_WritePin(SMZL_DIR_GPIO_Port, SMZL_DIR_Pin, (GPIO_PinState)AxisDir_Z_UP);
+
+    smMotorSteps(120);
 
 	  Task_action(Verde);
 	  //Mian();

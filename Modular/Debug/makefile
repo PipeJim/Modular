@@ -9,16 +9,14 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include USB_HOST/Target/subdir.mk
--include USB_HOST/App/subdir.mk
+-include Middlewares/uart_wrpr_drv/src/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/subdir.mk
--include Middlewares/ST/STM32_USB_Host_Library/Core/Src/subdir.mk
--include Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Src/subdir.mk
 -include Middlewares/Motor_App/src/subdir.mk
 -include Drivers/StpMotor/src/subdir.mk
+-include Drivers/Servos/src/subdir.mk
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
@@ -71,7 +69,7 @@ main-build: Modular.elf secondary-outputs
 
 # Tool invocations
 Modular.elf Modular.map: $(OBJS) $(USER_OBJS) D:\STM32_Modular\Modular\Modular\STM32F429ZITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Modular.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\STM32_Modular\Modular\Modular\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Modular.map" -Wl,--gc-sections -static -L"D:\STM32_Modular\Modular\Modular\Middlewares\Motor_App\inc" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "Modular.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\STM32_Modular\Modular\Modular\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Modular.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

@@ -25,14 +25,12 @@ SUBDIRS := \
 Core/Src \
 Core/Startup \
 Drivers/STM32F4xx_HAL_Driver/Src \
+Drivers/Servos/src \
 Drivers/StpMotor/src \
 Middlewares/Motor_App/src \
-Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Src \
-Middlewares/ST/STM32_USB_Host_Library/Core/Src \
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 \
 Middlewares/Third_Party/FreeRTOS/Source \
 Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F \
 Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang \
-USB_HOST/App \
-USB_HOST/Target \
+Middlewares/uart_wrpr_drv/src \
 

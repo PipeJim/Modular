@@ -11,6 +11,7 @@
 #include "stm32f429xx.h"
 #include "cmsis_os2.h"
 #include "stpMotor.h"
+#include "main.h"
 
 /***************************************** Defines ************************************************/
 
@@ -35,7 +36,6 @@ AxisStpMtrDescriptor XAxisDes;
 
 /***************************************** Function Prototypes ************************************/
 StpMtrReturnType smInitAxisandMotors(AxisStpMtrDescriptor * axisDes, AxisGroup group, StepperMotorCfg *motorCfg);
-void smRun(void);
 
 /***************************************** Functions **********************************************/
 
@@ -110,10 +110,11 @@ void smMotorSteps(uint8_t steps)
 	}
 }
 
-void smRun(void)
+void smRun(StpMtrRequestType *request)
 {
+	StpMtrRequestType *req;
 
-	for (;;)
+	for (uint8_t i = 0; i < 8; i++)
 	{
 		if (ZAxisDes.EOLflag != kEOL_Top)
 		{
@@ -122,16 +123,67 @@ void smRun(void)
 		}
 		else
 		{
+			
 			break;
 		}
-		
 	}
 }
 
-/*API*/
-StpMtrReturnType smMoveAxis2Pos(StpMtrRequestType *request)
+void sm_Task(void)
 {
-	//uint8_t status = E_NOK;
-	//uint8_t state;
-	return 0;
+
+}
+
+/*API*/
+StpMtrReturnType smSetRequest(StpMtrRequestType *request)
+{
+	uint8_t retval = E_NOK;
+	
+	
+	
+	return retval;
+}
+
+/***********************************************************************************
+ * 
+ * @brief External Interupt Handler for End of Line switches
+ *
+ **********************************************************************************/
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	GPIO_TypeDef *port;
+	StpMtrEOLActive flag = kEOL_None;
+
+	switch (GPIO_Pin){
+		case TOP_ZEL_Pin:
+			port = TOP_ZEL_GPIO_Port;
+			flag = kEOL_Top;
+			break;
+		case RGHT_XEL_Pin:
+			port = RGHT_XEL_GPIO_Port;
+			flag = kEOL_Right;
+			break;
+		case BOTT_ZEL_Pin:
+			port = BOTT_ZEL_GPIO_Port;
+			flag = kEOL_Bottom;
+			break;
+		case LEFT_XEL_Pin:
+			port = LEFT_XEL_GPIO_Port;
+			flag = kEOL_Left;
+			break;	
+		default:
+			break;
+	}
+
+	if (GPIO_PIN_SET == HAL_GPIO_ReadPin(port,GPIO_Pin))
+	{
+		if (TOP_ZEL_Pin == GPIO_Pin || BOTT_ZEL_Pin== GPIO_Pin)
+		{
+			ZAxisDes.EOLflag = flag;			
+		}
+		else if (RGHT_XEL_Pin == GPIO_Pin || LEFT_XEL_Pin== GPIO_Pin)
+		{
+			XAxisDes.EOLflag = flag;
+		}
+	}
 }
